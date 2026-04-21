@@ -1,0 +1,44 @@
+# Koti Admin UI & Layout Enforcement Rules
+
+## 1. Typography Standards
+- **Line-Height**: All paragraphs and descriptive text MUST use a 1.5x rule (`leading-relaxed` in Tailwind).
+- **Font Scale**: Standardized sizes: `11px` (Labels), `12px` (Small), `14px` (Base), `18px` (Large), `24px+` (Headers).
+- **Labels**: All uppercase labels must use `tracking-widest` and `font-black`.
+
+## 2. Layout & The 8pt Grid
+- **Spacing**: All `padding`, `margin`, and `gap` values MUST be multiples of 8px (e.g., `p-2`=8px, `p-4`=16px, `p-8`=32px, `p-10`=40px).
+- **Card Hierarchy**:
+  - Headers inside cards must have exactly `margin-bottom: 8px` (`mb-2`).
+  - Outer card padding must be at least `24px` (`p-6`) or `40px` (`p-10`).
+
+## 3. Corner Radii & Nesting
+- **Standardization**: Use standard radii: `rounded-[48px]`, `rounded-[40px]`, `rounded-[24px]`, `rounded-[16px]`.
+- **Nesting Formula**: Ensure child elements follow the curve.
+  - `InnerRadius = OuterRadius - Padding`.
+  - Example: Card `rounded-[48px]` with `p-10` (40px padding) -> Child must be `rounded-[8px]`.
+
+## 4. Professional Shadow Physics
+- **Ambient Shadow Formula**: Blur (B) must be roughly double the Vertical Offset (Y). Formula: `0 [Y]px [Y*2]px [Color]`.
+- **Layering**: Use TWO shadows on critical elements: one sharp edge (low blur) and one soft ambient glow (high blur).
+- **Transparency**: Never use `#000` at high opacity. Use brand-tinted grays or `rgba(primary, 0.1)` (max 0.2 opacity).
+- **Zero Spread**: Keep the 4th value (spread) at `0` to avoid "chunky" or "dirty" shadows.
+- **Direction**: All shadows must fall in the same direction (down or slightly down-right).
+
+## 5. Visual Excellence
+- **Elevation Scale**: 
+  - Low (2px): Standard items.
+  - Medium (8px): Hover states.
+  - High (16px): Modals.
+- **Borders**: Prefer background tints (e.g., `bg-gray-50`) over heavy borders for internal sections.
+- **Interactivity**: All cards must have a `:hover` state with elevation change (`-translate-y-1` and increased brand shadow).
+
+## 6. Accessibility
+- All interactive icons must- Always use `aria-label` for buttons containing only icons.
+- All decorative icons must have `aria-hidden="true"`.
+- Buttons must have visible focus rings.
+
+## 7. Design Integrity Auditor
+- **Monitoring**: After every refactor, cross-reference against the [Design Audit Manifest](file:///Users/Jayapalreddy/.gemini/antigravity/brain/f96faa86-db9a-4132-838c-d216ad40ae27/design_audit_manifest.md).
+- **No-Loss Rule**: Do NOT remove data-bindings, conditional rendering logic, or accessibility attributes during CSS/Layout migrations.
+- **Color Guard**: Ensure `#E11D48` remains the primary action color. Do not replace with generic shadcn colors.
+- **Reporting**: Explicitly state in every task update if a "Design Loss" check was performed.

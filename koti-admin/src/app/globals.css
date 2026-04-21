@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+:root {
+  /* --- SHADCN DAY MODE BASE --- */
+  --background: #ffffff;
+  --foreground: #0f172a; /* slate-900 */
+  
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  
+  /* --- KOTI BRAND CONSTANT --- */
+  --primary: #E11D48;
+  --primary-rgb: 225, 29, 72;
+  --primary-foreground: #ffffff;
+  
+  --secondary: #f8fafc; /* slate-50 */
+  --secondary-foreground: #0f172a;
+  
+  --muted: #f1f5f9; /* slate-100 */
+  --muted-foreground: #64748b; /* slate-500 */
+  
+  --accent: #f1f5f9;
+  --accent-foreground: #0f172a;
+  
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  
+  --border: #f1f5f9; /* Lighter Day Mode Border (slate-100) */
+  --input: #f1f5f9;
+  --ring: #E11D48;
+  
+  /* --- PROFESSIONAL GEOMETRY (50% REDUCED) --- */
+  --radius: 0.375rem; /* 6px - Sharp Professional Standard */
+  
+  /* --- SUBTLE DAY MODE DEPTH --- */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+  
+  /* Legacy/Compatibility support for layered shadows (Toned Down) */
+  --elevation-low: 0 1px 3px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.03);
+  --elevation-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --elevation-high: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+  --elevation-master: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+@theme {
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  
+  --radius-xl: var(--radius);
+  --radius-lg: calc(var(--radius) - 2px);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-sm: calc(var(--radius) - 6px);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+/* --- SHADCN COMPONENT PRIMITIVES --- */
+
+.koti-card {
+  @apply bg-card text-card-foreground border border-border shadow-sm transition-all duration-300;
+  border-radius: var(--radius);
+  padding: 1.5rem; /* 24px */
+}
+
+.koti-card:hover {
+  @apply border-primary/20 shadow-md;
+  transform: translateY(-2px);
+}
+
+.koti-heading {
+  @apply font-semibold text-slate-900 tracking-tight leading-tight mb-1;
+}
+
+/* Utility for Layered Shadows (Neutral Day Mode) */
+.shadow-layered-low { box-shadow: var(--elevation-low); }
+.shadow-layered-md { box-shadow: var(--elevation-md); }
+.shadow-layered-high { box-shadow: var(--elevation-high); }
+.shadow-layered-master { box-shadow: var(--elevation-master); }
+
+/* Custom Scrollbar (Shadcn style) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}
