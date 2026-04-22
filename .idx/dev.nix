@@ -4,7 +4,9 @@
   packages = [
     pkgs.nodejs_20
     pkgs.nodePackages.npm
+    pkgs.nodePackages.eas-cli
     pkgs.android-tools
+    pkgs.git
   ];
 
   # Sets environment variables in the workspace
