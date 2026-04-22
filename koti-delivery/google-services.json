@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "800828927714",
+    "project_id": "gen-lang-client-0273077261",
+    "storage_bucket": "gen-lang-client-0273077261.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:800828927714:android:ab48cea6994c7f074838bb",
+        "android_client_info": {
+          "package_name": "com.koti.delivery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "800828927714-7cobos8r9mns02l681q4bako24mnkqmg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByZCtJjdhpnUeT4lCVIJ7jk0ZJHuOfQLA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "800828927714-7cobos8r9mns02l681q4bako24mnkqmg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

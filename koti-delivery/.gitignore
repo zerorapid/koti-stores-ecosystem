@@ -1,0 +1,14 @@
+node_modules/
+.expo/
+dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.env
+android/build/
+android/app/build/
+ios/build/
+*.png
+*.xml
+firebase-debug.log
+# google-services.json (Included for easy IDX migration)
