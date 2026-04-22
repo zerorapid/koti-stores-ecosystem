@@ -42,11 +42,12 @@
     workspace = {
       # Runs when a workspace is first created
       onCreate = {
-        npm-install = "npm install";
+        npm-install = "cd koti-delivery && npm install";
       };
       # Runs when the workspace is (re)started
       onStart = {
-        # Optional: any startup commands
+        # Pre-prepare the delivery app dependencies
+        prepare-delivery = "cd koti-delivery && npm install";
       };
     };
   };
