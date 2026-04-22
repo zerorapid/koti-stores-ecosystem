@@ -2,7 +2,7 @@
   # Which languages/toolchains to use
   channel = "stable-24.05"; # or "stable-23.11"
   packages = [
-    pkgs.nodejs_20
+    pkgs.nodejs_22
     pkgs.nodePackages.npm
     pkgs.nodePackages.eas-cli
     pkgs.android-tools
