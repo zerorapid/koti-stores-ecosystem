@@ -22,17 +22,7 @@ export default function Dashboard() {
   const [revenue, setRevenue] = useState(0);
   const [activeOrders, setActiveOrders] = useState(0);
   const [userCount, setUserCount] = useState(0);
-
-  const SYSTEM_MODULES = [
-    { id: "orders", label: "Order Management", description: `Manage ${activeOrders} live deliveries.`, href: "/orders", icon: ShoppingBag, color: "bg-blue-500", status: "ONLINE" },
-    { id: "inventory", label: "Inventory & Catalog", description: "Add/Edit products and monitor stock levels.", href: "/inventory", icon: Package, color: "bg-orange-500", status: "ONLINE" },
-    { id: "users", label: "Customer Management", description: `Manage ${userCount} active users and loyalty tiers.`, href: "/users", icon: Users, color: "bg-purple-500", status: "ONLINE" },
-    { id: "delivery", label: "Delivery Logistics", description: "Live rider tracking and dispatch controls.", href: "/delivery", icon: Truck, color: "bg-green-500", status: "ONLINE" },
-    { id: "loyalty", label: "Koti Discounts", description: "Configure global tiers and discount rates.", href: "/loyalty", icon: Award, color: "bg-amber-500", status: "ONLINE" },
-    { id: "support", label: "Customer Support", description: "Live chat and user query resolution.", href: "/support", icon: MessageSquare, color: "bg-pink-500", status: "ONLINE" },
-    { id: "reports", label: "Financial Reports", description: "Export CSV/PDF sales and tax reports.", href: "/reports", icon: BarChart3, color: "bg-indigo-500", status: "ONLINE" },
-    { id: "settings", label: "Global Settings", description: "Maintenance mode and service fee control.", href: "/settings", icon: Settings, color: "bg-slate-500", status: "ONLINE" },
-  ];
+  const [lowStockItems, setLowStockItems] = useState<any[]>([]);
 
   useEffect(() => {
     // 1. Sync Orders (Revenue & Activity)
@@ -54,14 +44,34 @@ export default function Dashboard() {
 
     // 2. Sync Users
     const unsubUsers = onSnapshot(collection(db, "users"), (snapshot) => {
-      setUserCount(snapshot.size || 8400); // Fallback to baseline
+      setUserCount(snapshot.size || 84); 
+    });
+
+    // 3. Sync Inventory (Low Stock Alerts)
+    const unsubInventory = onSnapshot(collection(db, "products"), (snapshot) => {
+      const lowStock = snapshot.docs
+        .map(doc => ({ id: doc.id, ...doc.data() }))
+        .filter((p: any) => (p.stock || 0) < 5);
+      setLowStockItems(lowStock);
     });
 
     return () => {
       unsubOrders();
       unsubUsers();
+      unsubInventory();
     };
   }, []);
+
+  const SYSTEM_MODULES = [
+    { id: "orders", label: "Order Management", description: `Manage ${activeOrders} live deliveries.`, href: "/orders", icon: ShoppingBag, color: "bg-blue-500", status: "ONLINE" },
+    { id: "inventory", label: "Inventory & Catalog", description: lowStockItems.length > 0 ? `⚠️ ${lowStockItems.length} Low Stock Alerts!` : "Stock levels are optimal.", href: "/inventory", icon: Package, color: "bg-orange-500", status: "ONLINE" },
+    { id: "users", label: "Customer Management", description: `Manage ${userCount} active users and loyalty tiers.`, href: "/users", icon: Users, color: "bg-purple-500", status: "ONLINE" },
+    { id: "delivery", label: "Delivery Logistics", description: "Live rider tracking and dispatch controls.", href: "/delivery", icon: Truck, color: "bg-green-500", status: "ONLINE" },
+    { id: "loyalty", label: "Koti Discounts", description: "Configure global tiers and discount rates.", href: "/loyalty", icon: Award, color: "bg-amber-500", status: "ONLINE" },
+    { id: "coupons", label: "Growth Hub", description: "Launch and track viral discount codes.", href: "/coupons", icon: Zap, color: "bg-pink-500", status: "ONLINE" },
+    { id: "support", label: "Customer Support", description: "Live chat and user query resolution.", href: "/support", icon: MessageSquare, color: "bg-indigo-500", status: "ONLINE" },
+    { id: "settings", label: "Global Settings", description: "Maintenance mode and service fee control.", href: "/settings", icon: Settings, color: "bg-slate-500", status: "ONLINE" },
+  ];
 
   return (
     <div className="space-y-8 pb-20 animate-in fade-in duration-700">

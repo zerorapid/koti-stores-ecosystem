@@ -32,6 +32,7 @@ const NAV_ITEMS = [
   { label: "Users", href: "/users", icon: Users },
   { label: "Delivery", href: "/delivery", icon: Truck },
   { label: "Loyalty", href: "/loyalty", icon: Award },
+  { label: "Coupons", href: "/coupons", icon: Ticket },
   { label: "Support", href: "/support", icon: MessageSquare },
   { label: "Marketing", href: "/marketing", icon: Megaphone },
   { label: "Reports", href: "/reports", icon: BarChart3 },

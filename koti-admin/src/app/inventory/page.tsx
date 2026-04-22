@@ -40,8 +40,6 @@ import {
   MinusCircle,
   BellRing
 } from "lucide-react";
-import { PRODUCTS as INITIAL_PRODUCTS } from "@/lib/koti-db";
-
 import { db } from "@/lib/koti-firebase";
 import { 
   collection, 
@@ -57,6 +55,7 @@ import {
 
 export default function InventoryPage() {
   const [products, setProducts] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [isEditorOpen, setIsEditorOpen] = useState(false);
@@ -71,21 +70,22 @@ export default function InventoryPage() {
   };
 
   useEffect(() => {
-    // REAL-TIME LISTENER: Syncs instantly with Cloud Firestore
+    // 1. Products Listener
     const q = query(collection(db, "products"), orderBy("name"));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const productList = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setProducts(productList);
-      setIsLoading(false);
-    }, (error) => {
-      showToast("Firebase Sync Error: " + error.message);
+    const unsubProducts = onSnapshot(q, (snapshot) => {
+      setProducts(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
       setIsLoading(false);
     });
 
-    return () => unsubscribe();
+    // 2. Categories Listener
+    const unsubCategories = onSnapshot(collection(db, "categories"), (snapshot) => {
+      setCategories(snapshot.docs.map(doc => doc.data().name || doc.id));
+    });
+
+    return () => {
+      unsubProducts();
+      unsubCategories();
+    };
   }, []);
 
   // Real-time Order Monitor
@@ -310,6 +310,7 @@ export default function InventoryPage() {
       {isEditorOpen && (
         <ProductEditor 
           product={editingProduct} 
+          categories={categories}
           onClose={() => setIsEditorOpen(false)} 
           onSave={handleSaveProduct} 
         />
@@ -329,10 +330,10 @@ export default function InventoryPage() {
   );
 }
 
-function ProductEditor({ product, onClose, onSave }: any) {
+function ProductEditor({ product, categories, onClose, onSave }: any) {
   const [formData, setFormData] = useState({
     name: product?.name || "",
-    category: product?.category || "Fresh Vegetables",
+    category: product?.category || (categories.length > 0 ? categories[0] : "General"),
     status: product?.status || "In Stock",
     stock: product?.stock || 0,
     price: product?.price || 0,
@@ -378,7 +379,7 @@ function ProductEditor({ product, onClose, onSave }: any) {
              {/* Core Info */}
              <div className="grid grid-cols-2 gap-6">
                 <FormItem label="Product Name" value={formData.name} onChange={(v:any) => setFormData({...formData, name: v})} placeholder="e.g., Organic Bananas" colSpan={2} />
-                <FormItem label="Category" type="select" value={formData.category} onChange={(v:any) => setFormData({...formData, category: v})} options={['Fresh Vegetables', 'Fruits', 'Dairy & Milk', 'Atta & Pulses', 'Snacks', 'Personal Care']} />
+                <FormItem label="Category" type="select" value={formData.category} onChange={(v:any) => setFormData({...formData, category: v})} options={categories.length > 0 ? categories : ['Loading...']} />
                 <FormItem label="Stock Availability" type="select" value={formData.status} onChange={(v:any) => setFormData({...formData, status: v})} options={['In Stock', 'Low Stock', 'Out of Stock']} />
                 <FormItem label="Inventory Stock (Units)" type="number" value={formData.stock} onChange={(v:any) => setFormData({...formData, stock: parseInt(v)})} />
                 <FormItem label="Unit Price (₹)" type="number" value={formData.price} onChange={(v:any) => setFormData({...formData, price: parseInt(v)})} />
